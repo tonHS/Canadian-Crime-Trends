@@ -3,16 +3,14 @@ Canadian Crime Metrics Generator for Google Colab
 ==================================================
 
 This script generates comprehensive crime metrics from Statistics Canada Table 35-10-0177-01.
-All outputs are saved as PNG files for easy sharing and presentation.
+All outputs use CRIME RATE data (per 100,000 population) and are saved as PNG files.
 
 Outputs:
 1. Table: Top 10 violent Criminal Code violations in 2024 by crime rate (with 2019, 2014 growth)
 2. Table: Top 10 property Criminal Code violations in 2024 by crime rate (with 2019, 2014 growth)
 3. Table: Top 10 other Criminal Code violations in 2024 by crime rate (with 2019, 2014 growth)
-4. Table: Shoplifting by actual numbers for 2024 (with 2019, 2014 growth)
-5. Line graph: Criminal Code shoplifting under $5,000 (2000-2024)
-6. Line graph: Criminal Code shoplifting over $5,000 (2000-2024)
-7. Line graph: Criminal Code shoplifting total (2000-2024)
+4. Line graph: Criminal Code shoplifting under $5,000 crime rate (2014-2024)
+5. Line graph: Criminal Code shoplifting over $5,000 crime rate (2014-2024)
 
 Author: tonHS
 Date: 2025-11-24
@@ -412,152 +410,86 @@ create_table_as_png(
 )
 
 # ============================================================================
-# STEP 7: SHOPLIFTING BY ACTUAL NUMBERS
+# STEP 7: SHOPLIFTING LINE GRAPHS HELPER (USING CRIME RATES)
 # ============================================================================
-
-print("\n" + "="*80)
-print("STEP 6: GENERATING SHOPLIFTING TABLE (BY ACTUAL NUMBERS)")
-print("="*80)
 
 # Find shoplifting violations
 shoplifting_under_pattern = r'Shoplifting.*5,?000.*or under|Shoplifting.*under.*5,?000'
 shoplifting_over_pattern = r'Shoplifting.*over.*5,?000'
 
-# Filter for actual numbers (not rate)
+# Filter for crime rate data (not actual numbers)
 if stats_col:
-    df_actual = df[df[stats_col].str.contains('number|actual', case=False, na=False)].copy()
+    df_rate = df[df[stats_col].str.contains('rate', case=False, na=False)].copy()
 else:
-    # Try to identify actual count columns by checking if values are large integers
-    df_actual = df.copy()
+    # Fallback: assume all data is rate
+    df_rate = df.copy()
 
-# Get shoplifting data for each category
-def get_shoplifting_counts(year):
-    """Get shoplifting counts for a specific year"""
-    df_year = df_actual[df_actual['Year'] == year]
+# Get shoplifting crime rate data for each category
+def get_shoplifting_rates(year):
+    """Get shoplifting crime rates for a specific year"""
+    df_year = df_rate[df_rate['Year'] == year]
 
     # Under $5,000
     mask_under = df_year['Violation'].str.contains(shoplifting_under_pattern, case=False, na=False, regex=True)
-    count_under = df_year[mask_under]['VALUE'].sum()
+    rate_under = df_year[mask_under]['VALUE'].sum()
 
     # Over $5,000
     mask_over = df_year['Violation'].str.contains(shoplifting_over_pattern, case=False, na=False, regex=True)
-    count_over = df_year[mask_over]['VALUE'].sum()
+    rate_over = df_year[mask_over]['VALUE'].sum()
 
-    # Total
-    count_total = count_under + count_over
-
-    return count_under, count_over, count_total
-
-# Get data for target years
-under_2024, over_2024, total_2024 = get_shoplifting_counts(2024)
-under_2019, over_2019, total_2019 = get_shoplifting_counts(2019)
-under_2014, over_2014, total_2014 = get_shoplifting_counts(2014)
-
-# Calculate growth rates
-def calc_growth(current, past):
-    if past > 0:
-        return ((current - past) / past * 100)
-    return np.nan
-
-shoplifting_data = [
-    {
-        'Category': 'Shoplifting under $5,000',
-        '2024 Count': f'{int(under_2024):,}',
-        'Growth from 2019 (%)': f'{calc_growth(under_2024, under_2019):+.1f}%' if not pd.isna(calc_growth(under_2024, under_2019)) else 'N/A',
-        'Growth from 2014 (%)': f'{calc_growth(under_2024, under_2014):+.1f}%' if not pd.isna(calc_growth(under_2024, under_2014)) else 'N/A'
-    },
-    {
-        'Category': 'Shoplifting over $5,000',
-        '2024 Count': f'{int(over_2024):,}',
-        'Growth from 2019 (%)': f'{calc_growth(over_2024, over_2019):+.1f}%' if not pd.isna(calc_growth(over_2024, over_2019)) else 'N/A',
-        'Growth from 2014 (%)': f'{calc_growth(over_2024, over_2014):+.1f}%' if not pd.isna(calc_growth(over_2024, over_2014)) else 'N/A'
-    },
-    {
-        'Category': 'Shoplifting TOTAL',
-        '2024 Count': f'{int(total_2024):,}',
-        'Growth from 2019 (%)': f'{calc_growth(total_2024, total_2019):+.1f}%' if not pd.isna(calc_growth(total_2024, total_2019)) else 'N/A',
-        'Growth from 2014 (%)': f'{calc_growth(total_2024, total_2014):+.1f}%' if not pd.isna(calc_growth(total_2024, total_2014)) else 'N/A'
-    }
-]
-
-df_shoplifting_table = pd.DataFrame(shoplifting_data)
-create_table_as_png(
-    df_shoplifting_table,
-    'Shoplifting in 2024 (by Actual Numbers)',
-    '04_shoplifting_actual_numbers.png',
-    figsize=(12, 6)
-)
+    return rate_under, rate_over
 
 # ============================================================================
-# STEP 8: SHOPLIFTING LINE GRAPHS (2000-2024)
+# STEP 8: SHOPLIFTING LINE GRAPHS (2000-2024) - USING CRIME RATES
 # ============================================================================
 
 print("\n" + "="*80)
-print("STEP 7: GENERATING SHOPLIFTING LINE GRAPHS (2000-2024)")
+print("STEP 6: GENERATING SHOPLIFTING LINE GRAPHS (BY CRIME RATE, 2000-2024)")
 print("="*80)
 
-# Get yearly data for shoplifting
-years = list(range(2000, 2025))
-under_values = []
-over_values = []
-total_values = []
+# Get yearly crime rate data for shoplifting (shorter period for clearer visualization)
+years = list(range(2014, 2025))
+under_rates = []
+over_rates = []
 
 for year in years:
-    under, over, total = get_shoplifting_counts(year)
-    under_values.append(under)
-    over_values.append(over)
-    total_values.append(total)
+    rate_under, rate_over = get_shoplifting_rates(year)
+    under_rates.append(rate_under)
+    over_rates.append(rate_over)
 
-# Graph 1: Shoplifting under $5,000
+# Graph 1: Shoplifting under $5,000 (Crime Rate)
 fig, ax = plt.subplots(figsize=(14, 8))
-ax.plot(years, under_values, marker='o', linewidth=2.5, markersize=8,
+ax.plot(years, under_rates, marker='o', linewidth=2.5, markersize=8,
         color='#2E86AB', label='Shoplifting under $5,000')
-ax.set_title('Criminal Code: Shoplifting under $5,000 (2000-2024)',
+ax.set_title('Criminal Code: Shoplifting under $5,000 Crime Rate (2014-2024)',
              fontsize=16, fontweight='bold', pad=20)
 ax.set_xlabel('Year', fontsize=14, fontweight='bold')
-ax.set_ylabel('Number of Incidents', fontsize=14, fontweight='bold')
+ax.set_ylabel('Crime Rate (per 100,000 population)', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3, linestyle='--')
 ax.legend(fontsize=12)
-ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x:,.1f}'))
 ax.set_facecolor('#F8F9FA')
 plt.tight_layout()
-plt.savefig('05_shoplifting_under_5000_line_graph.png', dpi=300, bbox_inches='tight', facecolor='white')
+plt.savefig('04_shoplifting_under_5000_rate.png', dpi=300, bbox_inches='tight', facecolor='white')
 plt.close()
-print("✓ Saved: 05_shoplifting_under_5000_line_graph.png")
+print("✓ Saved: 04_shoplifting_under_5000_rate.png")
 
-# Graph 2: Shoplifting over $5,000
+# Graph 2: Shoplifting over $5,000 (Crime Rate)
 fig, ax = plt.subplots(figsize=(14, 8))
-ax.plot(years, over_values, marker='s', linewidth=2.5, markersize=8,
+ax.plot(years, over_rates, marker='s', linewidth=2.5, markersize=8,
         color='#A23B72', label='Shoplifting over $5,000')
-ax.set_title('Criminal Code: Shoplifting over $5,000 (2000-2024)',
+ax.set_title('Criminal Code: Shoplifting over $5,000 Crime Rate (2014-2024)',
              fontsize=16, fontweight='bold', pad=20)
 ax.set_xlabel('Year', fontsize=14, fontweight='bold')
-ax.set_ylabel('Number of Incidents', fontsize=14, fontweight='bold')
+ax.set_ylabel('Crime Rate (per 100,000 population)', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3, linestyle='--')
 ax.legend(fontsize=12)
-ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x:,.1f}'))
 ax.set_facecolor('#F8F9FA')
 plt.tight_layout()
-plt.savefig('06_shoplifting_over_5000_line_graph.png', dpi=300, bbox_inches='tight', facecolor='white')
+plt.savefig('05_shoplifting_over_5000_rate.png', dpi=300, bbox_inches='tight', facecolor='white')
 plt.close()
-print("✓ Saved: 06_shoplifting_over_5000_line_graph.png")
-
-# Graph 3: Shoplifting Total
-fig, ax = plt.subplots(figsize=(14, 8))
-ax.plot(years, total_values, marker='D', linewidth=3, markersize=8,
-        color='#F18F01', label='Total Shoplifting')
-ax.set_title('Criminal Code: Total Shoplifting (2000-2024)',
-             fontsize=16, fontweight='bold', pad=20)
-ax.set_xlabel('Year', fontsize=14, fontweight='bold')
-ax.set_ylabel('Number of Incidents', fontsize=14, fontweight='bold')
-ax.grid(True, alpha=0.3, linestyle='--')
-ax.legend(fontsize=12)
-ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
-ax.set_facecolor('#F8F9FA')
-plt.tight_layout()
-plt.savefig('07_shoplifting_total_line_graph.png', dpi=300, bbox_inches='tight', facecolor='white')
-plt.close()
-print("✓ Saved: 07_shoplifting_total_line_graph.png")
+print("✓ Saved: 05_shoplifting_over_5000_rate.png")
 
 # ============================================================================
 # COMPLETION SUMMARY
@@ -571,10 +503,10 @@ print("\n📊 Generated Files:")
 print("   1. 01_top10_violent_crimes_by_rate.png")
 print("   2. 02_top10_property_crimes_by_rate.png")
 print("   3. 03_top10_other_crimes_by_rate.png")
-print("   4. 04_shoplifting_actual_numbers.png")
-print("   5. 05_shoplifting_under_5000_line_graph.png")
-print("   6. 06_shoplifting_over_5000_line_graph.png")
-print("   7. 07_shoplifting_total_line_graph.png")
+print("   4. 04_shoplifting_under_5000_rate.png")
+print("   5. 05_shoplifting_over_5000_rate.png")
+
+print("\n✅ All outputs use CRIME RATE data (per 100,000 population)")
 
 print("\n📁 All files have been saved as PNG images in the current directory.")
 print("   You can download them from the Colab Files panel on the left.")
@@ -588,12 +520,10 @@ print("="*80)
 # Display sample images (optional - uncomment to view in notebook)
 # from IPython.display import Image, display
 # print("\n📷 Preview of generated images:")
-# for i in range(1, 8):
-#     filename = [f"0{i}_top10_violent_crimes_by_rate.png",
-#                 f"0{i}_top10_property_crimes_by_rate.png",
-#                 f"0{i}_top10_other_crimes_by_rate.png",
-#                 f"0{i}_shoplifting_actual_numbers.png",
-#                 f"0{i}_shoplifting_under_5000_line_graph.png",
-#                 f"0{i}_shoplifting_over_5000_line_graph.png",
-#                 f"0{i}_shoplifting_total_line_graph.png"][i-1]
+# for i in range(1, 6):
+#     filename = [f"01_top10_violent_crimes_by_rate.png",
+#                 f"02_top10_property_crimes_by_rate.png",
+#                 f"03_top10_other_crimes_by_rate.png",
+#                 f"04_shoplifting_under_5000_rate.png",
+#                 f"05_shoplifting_over_5000_rate.png"][i-1]
 #     display(Image(filename))
