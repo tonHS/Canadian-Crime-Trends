@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada Crime Statistics Analysis</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #2d3748; background: #f7fafc; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .intro { padding: 20px 40px; background: #f0f4f8; border-bottom: 1px solid #e2e8f0; }
+        .intro p { margin: 0; font-size: 1.1em; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; }
+        .section h2 { color: #4a5568; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        .section .boilerplate { background: #f8fafc; padding: 15px; border-left: 4px solid #667eea; margin: 15px 0; font-size: 0.95em; }
+        .chart { text-align: center; margin: 20px 0; }
+        .chart img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .validation { background: #e8f5e9; padding: 20px; border-radius: 8px; margin-top: 40px; }
+        .validation h3 { color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Canada Crime Statistics Analysis</h1>
+            <p>Generated: 2025-12-18 22:17:25</p>
+        </div>
+        <div class="intro">
+            <p>This page measures multiple dimensions of crime in Canada. Data is sourced live from Statistics Canada. Crime severity overall has declined considerably since the start of the century, but organized crime, cybercrime and violent crime severity have all grown steadily over the past ten years. </p>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2>1. Crime Severity Index (1998-2024)</h2>
+                <div class="boilerplate">
+                    <p>The <a href="https://www150.statcan.gc.ca/n1/daily-quotidien/250722/dq250722a-eng.htm">Crime Severity Index</a> measures both the severity and volume of Canadian crime. Sinking <strong>-34.5%</strong> from 1998 to 2024, the CSI indicates that Canada is dealing with a less severe crime problem overall than at the turn of the century. Going by simply the volume of crime, without considering severity, i.e., the <a href= “https://www150.statcan.gc.ca/n1/daily-quotidien/250722/cg-a002-eng.htm”> crime rate </a>, the amount of crime has also significantly decreased since its peak in 1991. Violent crime severity, however, has been steadily increasing since 2014, ticking down slightly in 2024.
+</p>
+                </div>
+                <div class="chart"><img src="csi_trend.png" alt="CSI Trends"></div>
+            </div>
+            <div class="section">
+                <h2>2. Organized Crime Trends (2016-2024)</h2>
+                <div class="boilerplate">
+                    <p> Since organized crime tracking began in 2016, Canada has seen a steady increase in violations, which grew by <strong>207.8%</strong> from 2016 to 2024. Fraud, motor vehicle theft and drug trafficking were the most frequent violations by criminal organizations in 2024. </p>
+                </div>
+                <div class="chart"><img src="organized_crime_trends_2016_2024.png" alt="Organized Crime"></div>
+            </div>
+            <div class="section">
+                <h2>3. Cybercrime Trends (2014-2024)</h2>
+                <div class="boilerplate">
+                    <p>Cybercrime has emerged as one of the fastest-growing categories of criminal activity in Canada. Total cybercrime incidents have increased by <strong>509.6%</strong> from 2014 to 2024, reflecting the growing digitization of criminal activity and improved reporting mechanisms. Fraud was the most common cybercrime in 2024, followed by child porn making and distribution and by indecent or harassing communications.</p>
+                </div>
+                <div class="chart"><img src="cybercrime_trends_2014_2024.png" alt="Cybercrime"></div>
+            </div>
+            <div class="section">
+                <h2>4. Top 10 Crime Types by Rate (2024)</h2>
+                <div class="boilerplate">
+                    <p>The chart below shows the top 10 crimes by rate (per 100,000 population) in 2024, compared to 2014 levels. Mischief was the most common crime, followed by Theft $5,000 or under and Assault, level 1. For the 2024 top 10, 2014-2024 growth was led by Fraud and by Shoplifting under $5,000, with the biggest declines in Theft $5,000 or under from a motor vehicle and Breaking and entering. Growth rates over the past ten years for each of the 2024 Top 10 crimes were: Mischief: +3.5%; Theft $5,000 or under: -2.5%; Assault, level 1: +20.2%; Shoplifting $5,000 or under: +66.4%; Fraud: +88.8%; Fail to comply with order: +22.6%; Breaking and entering: -31.6%; Theft $5,000 or under from a motor vehicle: -42.8%; Disturb the peace: -10.3%; Uttering threats: +33.3%.</p>
+                </div>
+                <div class="chart"><img src="top_10_violations_crime_rate.png" alt="Top 10 Crimes"></div>
+            </div>
+            <div class="section">
+                <h2>5. Shoplifting Crime Rates (2000-2024)</h2>
+                <div class="boilerplate">
+                    <p>From 2014 to 2024, shoplifting $5,000 or under has increased by <strong>66.4%</strong>, while shoplifting over $5,000 has grown by <strong>220.6%</strong>. Such sharp increases in shoplifting under and over $5,000 indicate a significant post-pandemic shift. </p>
+                </div>
+                <div class="chart"><img src="shoplifting_under_5k_rate.png" alt="Shoplifting Under 5K"></div>
+                <div class="chart"><img src="shoplifting_over_5k_rate.png" alt="Shoplifting Over 5K"></div>
+            </div>
+            <div class="section">
+                <h2>6. Organized Retail Crime</h2>
+                <div class="boilerplate">
+                    <p>Organized retail crime (ORC) represents shoplifting incidents attributed to criminal organizations. From 2016 to 2024, ORC under $5,000 grew by <strong>254.8%</strong>, while ORC over $5,000 grew by <strong>500.0%</strong>. Triple-digit growth in both categories indicates a concerning increase, even sharper than the overall increase in organized crime. However, the actual numbers of annual ORC violations are quite low (see line charts). It is possible that some organized retail crime is instead captured as regular shoplifting due to challenges in proving an organized crime component. Depending on the StatCan methods used, it is also possible that shoplifting is undercounted if it occurred during the same incident as more serious violations (aggregate vs incident-based surveys, <a href = “https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=3302#a3”> Uniform Crime Reporting Survey </a>)
+</p>
+                </div>
+                <div class="chart"><img src="org_shoplifting_over_5000.png" alt="Org Shoplifting Over 5K"></div>
+                <div class="chart"><img src="org_shoplifting_under_5000.png" alt="Org Shoplifting Under 5K"></div>
+            </div>
+            <div class="validation">
+                <h3>✓ Validation Summary</h3>
+                <p>Ground Truth Tests: 19/19 passed</p>
+                <p>Data from Statistics Canada Tables: Organized crime 35-10-0062-01, Cybercrime 35-10-0001-01, General Crime 35-10-0177-01, Crime Severity Index 35-10-0026-01</p>
+                <p> <strong>Method and Disclaimer:</strong> Live data is pulled directly from Statistics Canada and validated against ground truth values. AI tools were used to design, code and evaluate this webpage, with comprehensive, reasonable efforts by the human building it to understand and validate the data analysis. Anyone relying on these statistics for material purposes should do their own analysis. The program is written in Python and HTML/CSS in a Colab Notebook and can be found on Github for replicability purposes. </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
