@@ -1,1 +1,0 @@
-Data product on Canadian Crime Trends. Starting with an MVP with a few metrics. Planning to grow beyond that. Using AI to augment design and coding learning curve and intend to deliver visuals via GitHub Page and replicable code via GiHub repository. 
