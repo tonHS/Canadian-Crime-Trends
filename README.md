@@ -13,7 +13,7 @@ The analysis is organized into six key sections:
 1. **Crime Severity Index (1998-2024)** - Overall trends showing long-term decline in crime severity
 2. **Organized Crime Trends (2016-2024)** - Tracking criminal organization violations including fraud, motor vehicle theft, and drug trafficking
 3. **Cybercrime Trends (2014-2024)** - Analysis of rapidly growing digital criminal activity
-4. **Top 10 Crime Types by Rate (2024)** - Most common crimes per 100,000 population with decade-over-decade comparisons
+4. **Top 10 Crime Types by Rate (2024)** - Most common crimes per 100,000 population with 2024 vs. 2014 comparisons
 5. **Shoplifting Crime Rates (2000-2024)** - Detailed examination of retail theft trends under and over $5,000
 6. **Organized Retail Crime** - Shoplifting attributed to criminal organizations
 
@@ -42,4 +42,4 @@ The data reflects Statistics Canada's official crime statistics, but interpretat
 
 ## Usage
 
-Open `index.html` in a web browser to view the complete analysis and interactive visualizations.
+Open `index.html` in a web browser to view the complete analysis and visualizations.
