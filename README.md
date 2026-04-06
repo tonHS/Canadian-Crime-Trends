@@ -2,6 +2,8 @@
 
 An interactive data visualization webpage analyzing crime statistics in Canada from 1998 to 2024, with live data sourced directly from Statistics Canada.
 
+Cautionary disclaimer: Don't rely on these numbers for anything material. Do your own reserach and check with experts. This is an exploratory dashboard project only.
+
 ## Overview
 
 This project presents a comprehensive analysis of Canadian crime trends across multiple dimensions. While overall crime severity has declined significantly since the turn of the century (-34.5% from 1998 to 2024), the data reveals concerning growth in specific categories including organized crime (+207.8% since 2016), cybercrime (+509.6% since 2014), and violent crime severity (steadily increasing since 2014).
