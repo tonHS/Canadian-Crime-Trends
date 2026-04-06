@@ -2,7 +2,7 @@
 
 An interactive data visualization webpage analyzing crime statistics in Canada from 1998 to 2024, with live data sourced directly from Statistics Canada.
 
-Cautionary disclaimer: Don't rely on these numbers for anything material. Do your own reserach and check with experts. This is an exploratory dashboard project only.
+Cautionary disclaimer: Don't rely on these numbers for anything material. Do your own research and check with experts. This is an exploratory dashboard project only.
 
 ## Overview
 
